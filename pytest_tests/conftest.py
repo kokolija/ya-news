@@ -6,7 +6,7 @@ from news.models import News, Comment
 
 
 @pytest.fixture
-def author(django_user_model):  
+def author(django_user_model):
     return django_user_model.objects.create(username='Автор')
 
 
@@ -31,7 +31,16 @@ def not_author_client(not_author):
 
 @pytest.fixture
 def news():
-    return News.objects.first()
+    news = News.objects.create(
+        title='Заголовок',
+        text='Текст новости'
+    )
+    return news
+
+
+@pytest.fixture
+def news_id_for_args(news):
+    return (news.id,)
 
 
 @pytest.fixture
@@ -42,3 +51,15 @@ def comment(author, news):
         author=author,
     )
     return comment
+
+
+@pytest.fixture
+def comment_id_for_args(comment):
+    return (comment.id,)
+
+
+@pytest.fixture
+def comment_form_data():
+    return {
+        'text': 'Другой текст',
+    }
